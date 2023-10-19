@@ -1,0 +1,29 @@
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    color: #333;
+  }
+
+  h1 {
+    color: #2B7CD3;
+    width: 100%;
+  }
+
+  h2 {
+    color: #2B7CD3;
+    width: 100%;
+  }
+
+  h3 {
+    color: #185ABD;
+    border: 1px solid #2B7CD3;
+    width: 100%;
+  }
+
+  #main-container {
+    max-width: 1200px;
+  }
+
+  
+
+

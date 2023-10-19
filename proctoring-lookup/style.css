@@ -1,0 +1,46 @@
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    color: #333;
+  }
+
+  h1 {
+    color: #333333;
+    width: 100%;
+  }
+
+  h2 {
+    color: #333333;
+    width: 100%;
+  }
+
+  h3 {
+    color: #185ABD;
+    border: 1px solid #2B7CD3;
+    width: 100%;
+  }
+
+  #main-container {
+    max-width: 1200px;
+  }
+
+
+  #modulelist tbody tr {
+    display: none; /* Hide rows by default */
+}
+
+  #modulelist tbody tr.visible {
+    display: table-row; /* Show them when they match */
+}
+
+#modulelist thead tr:not(.visible) {
+  display: none; /* Hide the "no results" message if not visible */
+}
+
+#modulelist tfoot tr:not(.visible) {
+    display: none; /* Hide the "no results" message if not visible */
+}
+
+  
+
+
