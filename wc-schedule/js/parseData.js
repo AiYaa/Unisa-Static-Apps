@@ -59,7 +59,7 @@ function parseEvents(EVENTS) {
                 sessionPlatforms: platforms,
                 msTeamsLink: (event.MS_Teams_Link ? event.MS_Teams_Link : ''),
                 resourcesLink: (event.Resources_Link ? event.Resources_Link: ''),
-                recordingLink: (event.FOL_Session && event.FOL_Session.Id ? 'https://mymodules.unisa.ac.za/access/content/group/WESTERN-CAPE-REGION/Resources/myUnisa_Recordings/index.html?module=' + event.FOL_Session.Id : 'https://mymodules.unisa.ac.za/access/content/group/WESTERN-CAPE-REGION/Resources/myUnisa_Recordings/index.html'),
+                recordingLink: (event.FOL_Session && event.FOL_Session.Id ? 'https://aiyaa.github.io/Unisa-Static-Apps/wc-recordings/?module=' + event.FOL_Session.Id : 'https://aiyaa.github.io/Unisa-Static-Apps/wc-recordings/'),
                 dateTime: (event.Date ? moment.utc(event.Date).add(2, 'hours').unix() : null)
                 //dateTime: dateToNumber.toTimeString()
             }
