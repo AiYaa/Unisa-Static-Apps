@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="https://cdn.jsdelivr.net/gh/smithsonian/dpo-voyager@latest/assets/favicon.png"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/gh/smithsonian/dpo-voyager@latest/assets/fonts/fonts.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <voyager-explorer
+      root="https://mooc-sakai.unisa.ac.za/access/content/group/deda249a-d90e-4394-b597-d009a9515fe7/Embroidery/"
+      document="scene.svx.json"
+      uiMode="none|title|menu"
+      toggles="ar"
+      enableAR="true"
+      arMode="ar"
+    ></voyager-explorer>
+
+    <script src="https://3d-api.si.edu/resources/js/voyager-explorer.min.js"></script>
+    <script>
+      // Initialize the Voyager Explorer
+
+      const voyager = document.querySelector("voyager-explorer");
+      voyager.enableAR();
+    </script>
+  </body>
+</html>

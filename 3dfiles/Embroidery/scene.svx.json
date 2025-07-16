@@ -1,0 +1,198 @@
+{
+  "asset": {
+    "type": "application/si-dpo-3d.document+json",
+    "version": "1.0",
+    "generator": "Voyager"
+  },
+  "scene": 0,
+  "scenes": [{ "units": "mm", "nodes": [0, 1, 6], "meta": 0, "setup": 0 }],
+  "nodes": [
+    {
+      "translation": [1769.9206392, 2440.0851058, 6605.3994915],
+      "rotation": [-0.052872, -0.0013001, -0.0000688, 0.9986004],
+      "scale": [1, 1, 1],
+      "name": "Camera",
+      "camera": 0
+    },
+    {
+      "rotation": [0, -0.001302, 0, 0.9999992],
+      "name": "Lights",
+      "children": [2, 3, 4, 5]
+    },
+    {
+      "translation": [-1711.1110875, 1873.431326, 3155.2184542],
+      "rotation": [0.4829741, -0.1070728, 0.1880998, 0.8484633],
+      "scale": [674.8055189, 674.8055189, 674.8055189],
+      "name": "Key",
+      "light": 0
+    },
+    {
+      "translation": [3083.3417082, 1822.8733237, 1887.6404152],
+      "rotation": [0.3546969, 0.163893, -0.3861077, 0.8356136],
+      "scale": [674.8055189, 674.8055189, 674.8055189],
+      "name": "Fill #1",
+      "light": 1
+    },
+    {
+      "translation": [-2362.6612238, -3089.700493, 1124.5587518],
+      "rotation": [0.9374013, -0.3018693, 0.0532277, 0.1652891],
+      "scale": [674.8055189, 674.8055189, 674.8055189],
+      "name": "Fill #2",
+      "light": 2
+    },
+    {
+      "translation": [3516.9438972, 209.6871585, -1995.0404759],
+      "rotation": [0.373256, 0.6426073, -0.5786063, 0.3360813],
+      "scale": [674.8055189, 674.8055189, 674.8055189],
+      "name": "Rim",
+      "light": 3
+    },
+    { "name": "Embroidery", "model": 0 }
+  ],
+  "cameras": [
+    {
+      "type": "perspective",
+      "perspective": { "yfov": 52, "znear": 23.0711824, "zfar": 23071.1823875 },
+      "autoNearFar": true
+    }
+  ],
+  "lights": [
+    {
+      "color": [1, 0.95, 0.9],
+      "intensity": 1,
+      "type": "directional",
+      "shadowEnabled": true,
+      "shadowSize": 6748.0551891
+    },
+    {
+      "color": [0.9, 0.95, 1],
+      "intensity": 0.7,
+      "type": "directional",
+      "shadowEnabled": true,
+      "shadowSize": 6748.0551891
+    },
+    { "color": [0.8, 0.85, 1], "intensity": 0.5, "type": "directional" },
+    { "color": [0.85, 0.9078313, 1], "intensity": 0.6, "type": "directional" }
+  ],
+  "models": [
+    {
+      "units": "cm",
+      "translation": [-48.8199997, 90, 142.1440277],
+      "boundingBox": {
+        "min": [-166.7910004, -125.9849866, -285.288043],
+        "max": [264.4309998, 306.9690597, 1]
+      },
+      "derivatives": [
+        {
+          "usage": "Web3D",
+          "quality": "AR",
+          "assets": [
+            {
+              "uri": "Untitled.glb",
+              "type": "Model",
+              "mimeType": "model/gltf-binary"
+            }
+          ]
+        },
+        {
+          "usage": "Web3D",
+          "quality": "High",
+          "assets": [
+            {
+              "uri": "Untitled.glb",
+              "type": "Model",
+              "mimeType": "model/gltf-binary"
+            }
+          ]
+        },
+        {
+          "usage": "App3D",
+          "quality": "AR",
+          "assets": [
+            {
+              "uri": "Untitled.glb",
+              "type": "Model",
+              "mimeType": "model/gltf-binary"
+            }
+          ]
+        },
+        {
+          "usage": "iOSApp3D",
+          "quality": "AR",
+          "assets": [
+            {
+              "uri": "Untitled.usdc",
+              "type": "Model"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metas": [
+    {
+      "collection": { "titles": { "EN": "Embroidery" }, "intros": { "EN": "" } }
+    }
+  ],
+  "setups": [
+    {
+      "units": "cm",
+      "interface": {
+        "visible": true,
+        "logo": true,
+        "menu": true,
+        "tools": true
+      },
+      "viewer": {
+        "shader": "Default",
+        "exposure": 1,
+        "toneMapping": false,
+        "gamma": 2,
+        "isWallMountAR": true,
+        "arScale": 1
+      },
+      "reader": { "enabled": false, "position": "Overlay" },
+      "navigation": {
+        "enabled": true,
+        "autoZoom": true,
+        "autoRotation": false,
+        "lightsFollowCamera": true,
+        "type": "Orbit",
+        "orbit": {
+          "orbit": [-0.3076923, -9.6260762, 0],
+          "offset": [2491.6708216, 1241.0413409, 10000],
+          "minOrbit": [-90, null, null],
+          "maxOrbit": [90, null, null],
+          "minOffset": [null, null, 0.1],
+          "maxOffset": [null, null, 10000]
+        }
+      },
+      "background": {
+        "style": "RadialGradient",
+        "color0": [0.2, 0.25, 0.3],
+        "color1": [0.01, 0.03, 0.05]
+      },
+      "floor": {
+        "visible": true,
+        "position": [0, -359.8499347, 0],
+        "size": 4329.5406718,
+        "color": [0.6, 0.75, 0.8],
+        "opacity": 0.5,
+        "receiveShadow": false,
+        "autoSize": true
+      },
+      "grid": { "visible": false, "color": [0.5, 0.7, 0.8] },
+      "tape": { "enabled": false },
+      "slicer": {
+        "enabled": false,
+        "axis": "X",
+        "position": 0.5,
+        "inverted": false,
+        "color": [0, 0.61, 0.87]
+      },
+      "environment": { "index": 0 },
+      "language": { "language": "EN" },
+      "audio": { "narrationId": "" }
+    }
+  ]
+}
