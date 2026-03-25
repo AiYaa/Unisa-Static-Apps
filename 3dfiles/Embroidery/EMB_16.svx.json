@@ -5,7 +5,7 @@
     "generator": "Voyager"
   },
   "scene": 0,
-  "scenes": [{ "units": "mm", "nodes": [0, 1, 2], "meta": 0, "setup": 0 }],
+  "scenes": [{ "units": "mm", "nodes": [0, 1, 6], "meta": 0, "setup": 0 }],
   "nodes": [
     {
       "translation": [0, 0, 6000],
@@ -16,7 +16,35 @@
     },
     {
       "name": "Lights",
-      "children": [3, 4, 5, 6]
+      "children": [2, 3, 4, 5]
+    },
+    {
+      "translation": [-1711, 1873, 3155],
+      "rotation": [0.4829741, -0.1070728, 0.1880998, 0.8484633],
+      "scale": [675, 675, 675],
+      "name": "Key",
+      "light": 0
+    },
+    {
+      "translation": [3083, 1823, 1888],
+      "rotation": [0.3546969, 0.163893, -0.3861077, 0.8356136],
+      "scale": [675, 675, 675],
+      "name": "Fill #1",
+      "light": 1
+    },
+    {
+      "translation": [-2363, -3090, 1125],
+      "rotation": [0.9374013, -0.3018693, 0.0532277, 0.1652891],
+      "scale": [675, 675, 675],
+      "name": "Fill #2",
+      "light": 2
+    },
+    {
+      "translation": [3517, 210, -1995],
+      "rotation": [0.373256, 0.6426073, -0.5786063, 0.3360813],
+      "scale": [675, 675, 675],
+      "name": "Rim",
+      "light": 3
     },
     { "name": "Embroidery 16", "model": 0 }
   ],
