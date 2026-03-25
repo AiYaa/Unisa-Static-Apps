@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embroidery 5 - 3D Viewer</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="https://cdn.jsdelivr.net/gh/smithsonian/dpo-voyager@latest/assets/favicon.png"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/gh/smithsonian/dpo-voyager@latest/assets/fonts/fonts.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <voyager-explorer
+      root="https://aiyaa.github.io/Unisa-Static-Apps/3dfiles/Embroidery/"
+      document="EMB_05.svx.json"
+      uiMode="none|title|menu"
+      toggles="ar"
+      enableAR="true"
+      arMode="ar"
+    ></voyager-explorer>
+
+    <script src="https://3d-api.si.edu/resources/js/voyager-explorer.min.js"></script>
+    <script>
+      const voyager = document.querySelector("voyager-explorer");
+      voyager.enableAR();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+{
+  "asset": {
+    "type": "application/si-dpo-3d.document+json",
+    "version": "1.0",
+    "generator": "Voyager"
+  },
+  "scene": 0,
+  "scenes": [{ "units": "mm", "nodes": [0, 1, 2], "meta": 0, "setup": 0 }],
+  "nodes": [
+    {
+      "translation": [0, 0, 6000],
+      "rotation": [-0.052872, 0, 0, 0.9986004],
+      "scale": [1, 1, 1],
+      "name": "Camera",
+      "camera": 0
+    },
+    {
+      "name": "Lights",
+      "children": [3, 4, 5, 6]
+    },
+    { "name": "Embroidery 12", "model": 0 }
+  ],
+  "cameras": [
+    {
+      "type": "perspective",
+      "perspective": { "yfov": 52, "znear": 0.1, "zfar": 100000 },
+      "autoNearFar": true
+    }
+  ],
+  "lights": [
+    {
+      "color": [1, 0.95, 0.9],
+      "intensity": 1,
+      "type": "directional",
+      "shadowEnabled": true,
+      "shadowSize": 6748
+    },
+    {
+      "color": [0.9, 0.95, 1],
+      "intensity": 0.7,
+      "type": "directional",
+      "shadowEnabled": true,
+      "shadowSize": 6748
+    },
+    { "color": [0.8, 0.85, 1], "intensity": 0.5, "type": "directional" },
+    { "color": [0.85, 0.91, 1], "intensity": 0.6, "type": "directional" }
+  ],
+  "models": [
+    {
+      "units": "cm",
+      "derivatives": [
+        {
+          "usage": "Web3D",
+          "quality": "High",
+          "assets": [
+            {
+              "uri": "EMB_12.glb",
+              "type": "Model",
+              "mimeType": "model/gltf-binary"
+            }
+          ]
+        },
+        {
+          "usage": "Web3D",
+          "quality": "AR",
+          "assets": [
+            {
+              "uri": "EMB_12.glb",
+              "type": "Model",
+              "mimeType": "model/gltf-binary"
+            }
+          ]
+        },
+        {
+          "usage": "App3D",
+          "quality": "AR",
+          "assets": [
+            {
+              "uri": "EMB_12.glb",
+              "type": "Model",
+              "mimeType": "model/gltf-binary"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metas": [
+    {
+      "collection": { "titles": { "EN": "Embroidery 12" }, "intros": { "EN": "" } }
+    }
+  ],
+  "setups": [
+    {
+      "units": "cm",
+      "interface": {
+        "visible": true,
+        "logo": true,
+        "menu": true,
+        "tools": true
+      },
+      "viewer": {
+        "shader": "Default",
+        "exposure": 1,
+        "toneMapping": false,
+        "gamma": 2,
+        "isWallMountAR": true,
+        "arScale": 1
+      },
+      "reader": { "enabled": false, "position": "Overlay" },
+      "navigation": {
+        "enabled": true,
+        "autoZoom": true,
+        "autoRotation": false,
+        "lightsFollowCamera": true,
+        "type": "Orbit",
+        "orbit": {
+          "orbit": [0, 0, 0],
+          "offset": [0, 0, 10000],
+          "minOrbit": [-90, null, null],
+          "maxOrbit": [90, null, null],
+          "minOffset": [null, null, 0.1],
+          "maxOffset": [null, null, 100000]
+        }
+      },
+      "background": {
+        "style": "RadialGradient",
+        "color0": [0.2, 0.25, 0.3],
+        "color1": [0.01, 0.03, 0.05]
+      },
+      "floor": {
+        "visible": true,
+        "position": [0, -360, 0],
+        "size": 4330,
+        "color": [0.6, 0.75, 0.8],
+        "opacity": 0.5,
+        "receiveShadow": false,
+        "autoSize": true
+      },
+      "grid": { "visible": false, "color": [0.5, 0.7, 0.8] },
+      "tape": { "enabled": false },
+      "slicer": {
+        "enabled": false,
+        "axis": "X",
+        "position": 0.5,
+        "inverted": false,
+        "color": [0, 0.61, 0.87]
+      },
+      "environment": { "index": 0 },
+      "language": { "language": "EN" },
+      "audio": { "narrationId": "" }
+    }
+  ]
+}
