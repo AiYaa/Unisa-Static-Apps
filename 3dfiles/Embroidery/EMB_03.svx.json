@@ -5,73 +5,185 @@
     "generator": "Voyager"
   },
   "scene": 0,
-  "scenes": [{ "units": "mm", "nodes": [0, 1, 6], "meta": 0, "setup": 0 }],
+  "scenes": [
+    {
+      "units": "mm",
+      "nodes": [
+        0,
+        1,
+        6
+      ],
+      "meta": 0,
+      "setup": 0
+    }
+  ],
   "nodes": [
     {
-      "translation": [0, 0, 6000],
-      "rotation": [-0.052872, 0, 0, 0.9986004],
-      "scale": [1, 1, 1],
+      "translation": [
+        0,
+        0,
+        6000
+      ],
+      "rotation": [
+        -0.052872,
+        0,
+        0,
+        0.9986004
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
       "name": "Camera",
       "camera": 0
     },
     {
       "name": "Lights",
-      "children": [2, 3, 4, 5]
+      "children": [
+        2,
+        3,
+        4,
+        5
+      ]
     },
     {
-      "translation": [-1711, 1873, 3155],
-      "rotation": [0.4829741, -0.1070728, 0.1880998, 0.8484633],
-      "scale": [675, 675, 675],
+      "translation": [
+        -1711,
+        1873,
+        3155
+      ],
+      "rotation": [
+        0.4829741,
+        -0.1070728,
+        0.1880998,
+        0.8484633
+      ],
+      "scale": [
+        675,
+        675,
+        675
+      ],
       "name": "Key",
       "light": 0
     },
     {
-      "translation": [3083, 1823, 1888],
-      "rotation": [0.3546969, 0.163893, -0.3861077, 0.8356136],
-      "scale": [675, 675, 675],
+      "translation": [
+        3083,
+        1823,
+        1888
+      ],
+      "rotation": [
+        0.3546969,
+        0.163893,
+        -0.3861077,
+        0.8356136
+      ],
+      "scale": [
+        675,
+        675,
+        675
+      ],
       "name": "Fill #1",
       "light": 1
     },
     {
-      "translation": [-2363, -3090, 1125],
-      "rotation": [0.9374013, -0.3018693, 0.0532277, 0.1652891],
-      "scale": [675, 675, 675],
+      "translation": [
+        -2363,
+        -3090,
+        1125
+      ],
+      "rotation": [
+        0.9374013,
+        -0.3018693,
+        0.0532277,
+        0.1652891
+      ],
+      "scale": [
+        675,
+        675,
+        675
+      ],
       "name": "Fill #2",
       "light": 2
     },
     {
-      "translation": [3517, 210, -1995],
-      "rotation": [0.373256, 0.6426073, -0.5786063, 0.3360813],
-      "scale": [675, 675, 675],
+      "translation": [
+        3517,
+        210,
+        -1995
+      ],
+      "rotation": [
+        0.373256,
+        0.6426073,
+        -0.5786063,
+        0.3360813
+      ],
+      "scale": [
+        675,
+        675,
+        675
+      ],
       "name": "Rim",
       "light": 3
     },
-    { "name": "Embroidery 3", "model": 0 }
+    {
+      "name": "Voices against gender-based violence",
+      "model": 0
+    }
   ],
   "cameras": [
     {
       "type": "perspective",
-      "perspective": { "yfov": 52, "znear": 0.1, "zfar": 100000 },
+      "perspective": {
+        "yfov": 52,
+        "znear": 0.1,
+        "zfar": 100000
+      },
       "autoNearFar": true
     }
   ],
   "lights": [
     {
-      "color": [1, 0.95, 0.9],
+      "color": [
+        1,
+        0.95,
+        0.9
+      ],
       "intensity": 1,
       "type": "directional",
       "shadowEnabled": true,
       "shadowSize": 6748
     },
     {
-      "color": [0.9, 0.95, 1],
+      "color": [
+        0.9,
+        0.95,
+        1
+      ],
       "intensity": 0.7,
       "type": "directional",
       "shadowEnabled": true,
       "shadowSize": 6748
     },
-    { "color": [0.8, 0.85, 1], "intensity": 0.5, "type": "directional" },
-    { "color": [0.85, 0.91, 1], "intensity": 0.6, "type": "directional" }
+    {
+      "color": [
+        0.8,
+        0.85,
+        1
+      ],
+      "intensity": 0.5,
+      "type": "directional"
+    },
+    {
+      "color": [
+        0.85,
+        0.91,
+        1
+      ],
+      "intensity": 0.6,
+      "type": "directional"
+    }
   ],
   "models": [
     {
@@ -115,7 +227,14 @@
   ],
   "metas": [
     {
-      "collection": { "titles": { "EN": "Embroidery 3" }, "intros": { "EN": "" } }
+      "collection": {
+        "titles": {
+          "EN": "Voices against gender-based violence"
+        },
+        "intros": {
+          "EN": "This piece captures the collective strength of women rising against violence. The protest is not just a gathering, it is a chorus of voices demanding dignity, safety, and justice. Each raised hand, each step forward, signifies defiance against silence and oppression. The artwork reflects both pain and resilience: pain from the wounds of GBV, and resilience in the courage to stand together and say no more. It is a reminder that change begins when voices unite, and that the fight against violence is a fight for humanity itself."
+        }
+      }
     }
   ],
   "setups": [
@@ -135,7 +254,10 @@
         "isWallMountAR": true,
         "arScale": 1
       },
-      "reader": { "enabled": false, "position": "Overlay" },
+      "reader": {
+        "enabled": false,
+        "position": "Overlay"
+      },
       "navigation": {
         "enabled": true,
         "autoZoom": true,
@@ -143,40 +265,99 @@
         "lightsFollowCamera": true,
         "type": "Orbit",
         "orbit": {
-          "orbit": [0, 0, 0],
-          "offset": [0, 0, 10000],
-          "minOrbit": [-90, null, null],
-          "maxOrbit": [90, null, null],
-          "minOffset": [null, null, 0.1],
-          "maxOffset": [null, null, 100000]
+          "orbit": [
+            0,
+            0,
+            0
+          ],
+          "offset": [
+            0,
+            0,
+            10000
+          ],
+          "minOrbit": [
+            -90,
+            null,
+            null
+          ],
+          "maxOrbit": [
+            90,
+            null,
+            null
+          ],
+          "minOffset": [
+            null,
+            null,
+            0.1
+          ],
+          "maxOffset": [
+            null,
+            null,
+            100000
+          ]
         }
       },
       "background": {
         "style": "Solid",
-        "color0": [1, 1, 1],
-        "color1": [1, 1, 1]
+        "color0": [
+          1,
+          1,
+          1
+        ],
+        "color1": [
+          1,
+          1,
+          1
+        ]
       },
       "floor": {
         "visible": true,
-        "position": [0, -360, 0],
+        "position": [
+          0,
+          -360,
+          0
+        ],
         "size": 4330,
-        "color": [0.6, 0.75, 0.8],
+        "color": [
+          0.6,
+          0.75,
+          0.8
+        ],
         "opacity": 0.5,
         "receiveShadow": false,
         "autoSize": true
       },
-      "grid": { "visible": false, "color": [0.5, 0.7, 0.8] },
-      "tape": { "enabled": false },
+      "grid": {
+        "visible": false,
+        "color": [
+          0.5,
+          0.7,
+          0.8
+        ]
+      },
+      "tape": {
+        "enabled": false
+      },
       "slicer": {
         "enabled": false,
         "axis": "X",
         "position": 0.5,
         "inverted": false,
-        "color": [0, 0.61, 0.87]
+        "color": [
+          0,
+          0.61,
+          0.87
+        ]
       },
-      "environment": { "index": 0 },
-      "language": { "language": "EN" },
-      "audio": { "narrationId": "" }
+      "environment": {
+        "index": 0
+      },
+      "language": {
+        "language": "EN"
+      },
+      "audio": {
+        "narrationId": ""
+      }
     }
   ]
 }
