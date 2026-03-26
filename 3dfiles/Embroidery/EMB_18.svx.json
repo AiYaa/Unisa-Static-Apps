@@ -152,9 +152,9 @@
         }
       },
       "background": {
-        "style": "RadialGradient",
-        "color0": [0.2, 0.25, 0.3],
-        "color1": [0.01, 0.03, 0.05]
+        "style": "Solid",
+        "color0": [1, 1, 1],
+        "color1": [1, 1, 1]
       },
       "floor": {
         "visible": true,
