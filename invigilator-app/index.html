@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invigilator App Simulation – UNISA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <style>
+    :root {
+      --blue:  #003C71;
+      --green: #1a7a4a;
+      --red:   #C8102E;
+      --gold:  #FFB81C;
+      --bg:    #eef2f7;
+      --shadow: 0 2px 14px rgba(0,0,0,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding-bottom: 32px; }
+
+    /* ── HEADER ────────────────────────────── */
+    .hdr {
+      background: var(--blue);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .hdr-logo {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 11px; color: var(--blue); flex-shrink: 0; line-height: 1.2;
+      text-align: center;
+    }
+    .hdr h1 { margin: 0; font-size: 1.05rem; font-weight: 700; }
+    .hdr p  { margin: 0; font-size: 0.75rem; opacity: .75; }
+
+    /* ── PHASE TABS ────────────────────────── */
+    .phase-nav {
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      overflow-x: auto;
+      padding: 0 12px;
+      gap: 4px;
+    }
+    .p-tab {
+      border: none; background: none; cursor: pointer;
+      padding: 13px 18px;
+      font-size: .85rem; font-weight: 600; color: #777;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      display: flex; align-items: center; gap: 7px;
+      transition: color .2s, border-color .2s;
+    }
+    .p-tab.active { color: var(--tc); border-bottom-color: var(--tc); }
+    .p-tab:hover:not(.active) { color: #333; background: #f5f5f5; }
+
+    /* ── PROGRESS ──────────────────────────── */
+    .prog-area { max-width: 1100px; margin: 14px auto 0; padding: 0 16px; }
+    .prog-lbl  { font-size: .78rem; color: #666; margin-bottom: 5px; }
+    .prog-bar-wrap { height: 5px; background: #dde3ec; border-radius: 3px; overflow: hidden; }
+    .prog-bar { height: 100%; border-radius: 3px; transition: width .4s ease; }
+
+    /* ── MAIN GRID ─────────────────────────── */
+    .main {
+      max-width: 1100px;
+      margin: 14px auto 0;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 760px) { .main { grid-template-columns: 1fr; } }
+
+    /* ── IMAGE PANEL ───────────────────────── */
+    .img-panel {
+      background: #1a1a2e;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      height: 540px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .img-panel img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .ann-overlay {
+      position: absolute; inset: 0;
+      pointer-events: none;
+    }
+
+    /* ── ANNOTATION DOT ────────────────────── */
+    .ann-dot {
+      position: absolute;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      transform: translate(-50%, -50%);
+      display: none;
+      z-index: 10;
+      animation: pulse 1.8s infinite;
+      cursor: default;
+    }
+    .ann-dot.active { display: flex; align-items: center; justify-content: center; }
+    .ann-dot span { font-size: 10px; font-weight: 900; color: #fff; }
+
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(255,184,28,.75); }
+      65%  { box-shadow: 0 0 0 16px rgba(255,184,28,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,184,28,0); }
+    }
+
+    /* ── INFO PLACEHOLDER (no-image steps) ─── */
+    .img-placeholder {
+      background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+      border-radius: 14px;
+      height: 540px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      color: #99a;
+    }
+    .img-placeholder .ph-icon { font-size: 5rem; }
+    .img-placeholder p { font-size: .82rem; }
+
+    /* ── INFO PANEL ────────────────────────── */
+    .info-panel {
+      background: #fff;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .phase-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .4px;
+      color: #fff;
+      margin-bottom: 10px;
+      width: fit-content;
+    }
+    .step-title { font-size: 1.1rem; font-weight: 800; color: #1a1a2e; margin-bottom: 3px; }
+    .step-sub   { font-size: .8rem; color: #888; margin-bottom: 12px; }
+    .step-desc  { font-size: .875rem; color: #444; line-height: 1.65; margin-bottom: 16px; }
+
+    /* Annotation callout */
+    .ann-box {
+      border-radius: 0 10px 10px 0;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      border-left: 4px solid var(--gold);
+      background: #fffcee;
+      min-height: 64px;
+      transition: background .25s;
+    }
+    .ann-box.warn { border-left-color: var(--red); background: #fff5f5; }
+    .ann-box-lbl  { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #aaa; margin-bottom: 5px; }
+    .ann-box-txt  { font-size: .875rem; color: #222; line-height: 1.55; }
+
+    /* Pip dots */
+    .pips { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; }
+    .pip  {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: #dde; cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .pip.active { background: var(--gold); transform: scale(1.4); }
+    .pip.done   { background: #b0bec5; }
+    .pip-count  { font-size: .72rem; color: #aaa; margin-left: 4px; }
+
+    /* Info items (no-image steps) */
+    .info-list { margin-top: 6px; }
+    .info-row  {
+      display: flex; gap: 11px; align-items: flex-start;
+      padding: 9px 0; border-bottom: 1px solid #f0f0f0;
+      font-size: .875rem; color: #333; line-height: 1.5;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row .ico { font-size: 1.2rem; flex-shrink: 0; }
+
+    /* Warning stripe */
+    .warn-stripe {
+      background: #fff0f0; border: 1.5px solid #f5c6c6;
+      border-radius: 8px; padding: 10px 13px; margin-top: 8px;
+      font-size: .8rem; color: #a00;
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+
+    /* ── BOTTOM NAV ────────────────────────── */
+    .nav-bar {
+      max-width: 1100px;
+      margin: 14px auto 0;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-nav {
+      padding: 10px 20px;
+      border: none; border-radius: 9px;
+      font-size: .85rem; font-weight: 600;
+      cursor: pointer; transition: filter .15s, opacity .15s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .btn-nav:disabled { opacity: .38; cursor: not-allowed; }
+    .btn-nav:not(:disabled):hover { filter: brightness(.93); }
+    .btn-prev { background: #e4eaf3; color: #3a4a5c; }
+    .btn-ann  { background: #fff3cc; color: #7a5700; border: 1.5px solid var(--gold); }
+    .btn-ann:not(:disabled):hover { background: var(--gold); color: #fff; }
+    .btn-next { color: #fff; }
+    .nav-mid  { flex: 1; text-align: center; font-size: .75rem; color: #999; }
+
+    /* ── FINISH SCREEN ─────────────────────── */
+    .finish-screen {
+      background: #fff; border-radius: 14px; padding: 48px 32px;
+      text-align: center; box-shadow: var(--shadow);
+      grid-column: 1 / -1;
+    }
+    .finish-screen .big { font-size: 3.5rem; }
+    .finish-screen h2 { font-size: 1.4rem; font-weight: 800; color: #1a1a2e; margin: 12px 0 8px; }
+    .finish-screen p  { color: #666; max-width: 480px; margin: 0 auto; font-size: .9rem; }
+
+    /* fade transition */
+    .fade-in { animation: fadeUp .3s ease both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="hdr">
+  <div class="hdr-logo">UNI<br>SA</div>
+  <div>
+    <h1>Invigilator App — Step-by-Step Simulation</h1>
+    <p>UNISA Western Cape Campus &nbsp;|&nbsp; 2026 Examination Guide</p>
+  </div>
+</div>
+
+<!-- Phase tabs -->
+<nav class="phase-nav" id="phaseNav"></nav>
+
+<!-- Progress -->
+<div class="prog-area">
+  <div class="prog-lbl" id="progLbl"></div>
+  <div class="prog-bar-wrap"><div class="prog-bar" id="progBar"></div></div>
+</div>
+
+<!-- Main content -->
+<div class="main fade-in" id="main"></div>
+
+<!-- Nav buttons -->
+<div class="nav-bar">
+  <button class="btn-nav btn-prev" id="btnPrev"  onclick="go('prev')">&#8592; Previous</button>
+  <div class="nav-mid" id="navMid"></div>
+  <button class="btn-nav btn-ann"  id="btnAnn"   onclick="go('ann')">Next Annotation &#8594;</button>
+  <button class="btn-nav btn-next" id="btnNext"  onclick="go('next')">Next Step &#8594;</button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════
+const PHASES = [
+  {
+    id: 'before', label: 'Before the Exam', icon: '📋', color: '#003C71',
+    steps: [
+      {
+        title: 'Step 1: Check Module Eligibility',
+        sub: 'Confirm your module uses the Invigilator App before doing anything else',
+        desc: 'Not all modules require the Invigilator App. If none of your modules are invigilated, you will not be able to register. Always check first.',
+        image: null, icon: '🔍',
+        items: [
+          { i: '🔗', t: 'Visit <strong>myExams</strong> at myexams.unisa.ac.za/portal to check if your module is listed for Invigilator App invigilation' },
+          { i: '📅', t: 'Complete all setup <strong>at least 3 days before</strong> your first invigilated exam' },
+          { i: '✉️', t: 'Unsure? Email <strong>proctoringenquiries@unisa.ac.za</strong> for clarification' },
+          { i: '⚠️', t: 'Do not download or register if your module is not listed — you may be unable to access the app' }
+        ], ann: []
+      },
+      {
+        title: 'Step 2: Download the App',
+        sub: 'Install "The Invigilator" on your smartphone',
+        desc: 'Search for <strong>"The Invigilator"</strong> in your phone\'s app store. The app works on any smartphone and is designed not to be battery or data-intensive.',
+        image: null, icon: '📲',
+        items: [
+          { i: '🤖', t: '<strong>Android:</strong> Google Play Store — search "The Invigilator"' },
+          { i: '🍎', t: '<strong>iPhone:</strong> Apple App Store — search "The Invigilator"' },
+          { i: '📱', t: '<strong>Huawei:</strong> Huawei App Gallery — search "The Invigilator"' },
+          { i: '💡', t: 'Cannot find it? <strong>Update your phone\'s operating system</strong> and search again' }
+        ], ann: []
+      },
+      {
+        title: 'Step 3: Register on the App',
+        sub: 'Create your account using your UNISA details',
+        desc: 'Open the app and tap <strong>SIGN UP</strong>. Fill in all fields carefully — entry errors are the most common cause of registration failure.',
+        image: 'images/2.png',
+        ann: [
+          { x: 50, y: 17, t: 'Select <strong>UNISA</strong> as your academic institution from the dropdown at the top' },
+          { x: 50, y: 26, t: 'Enter your <strong>UNISA student number</strong> exactly as it appears on your student records' },
+          { x: 50, y: 52, t: 'Use your <strong>UNISA myLife email address</strong> — both email fields must match exactly' },
+          { x: 50, y: 77, t: 'Create a <strong>new password</strong> — this is NOT your myUnisa password. Keep it safe for future logins' }
+        ]
+      },
+      {
+        title: 'Step 4: Check Your Email',
+        sub: 'A verification code will be sent to your myLife inbox',
+        desc: 'After registering, The Invigilator emails a one-time verification code to your UNISA myLife address. Check your inbox — and your spam/junk folder if you don\'t see it.',
+        image: 'images/4.png',
+        ann: [
+          { x: 50, y: 22, t: 'Open your <strong>UNISA myLife email</strong> — check spam/junk/promotions folder if not in inbox' },
+          { x: 50, y: 53, t: 'Note this <strong>verification code</strong> — you will type it into the app on the next screen' }
+        ]
+      },
+      {
+        title: 'Step 5: Verify Your Account',
+        sub: 'Enter the code to activate your account',
+        desc: 'Back in the app, enter the code from your email. You cannot proceed to calibration or login without completing this step.',
+        image: 'images/3.png',
+        ann: [
+          { x: 50, y: 54, t: 'Tap the <strong>Sign-up Verification Pin</strong> field and enter the code from your email' },
+          { x: 50, y: 65, t: 'Tap <strong>Verify</strong> to activate your account and proceed' },
+          { x: 50, y: 76, t: 'Did not receive the email? Tap <strong>Re-send</strong> to request a new code, or send to your cellphone' }
+        ]
+      },
+      {
+        title: 'Step 6: Calibrate Your Device',
+        sub: 'The app tests your camera, microphone, and GPS',
+        desc: 'Calibration walks you through exactly what will happen during a real assessment — selfie prompts, document photos, and an audio test. <strong>Allow all permissions when asked.</strong>',
+        image: 'images/10.png',
+        ann: [
+          { x: 50, y: 10, t: '<strong>Device Calibration</strong> verifies compatibility and demonstrates every type of prompt you will receive in a real exam' },
+          { x: 50, y: 47, t: 'When you see <strong>Attention!</strong> — this is exactly what happens during your real assessment. Respond immediately' },
+          { x: 50, y: 73, t: 'Tap <strong>Continue</strong> and follow every instruction — you must grant camera, microphone, and GPS access' },
+          { x: 82, y: 87, t: 'Turn your <strong>media volume to maximum</strong> for the audio test — ringtone volume alone is not sufficient' }
+        ]
+      },
+      {
+        title: 'Step 7: Take Your Master Selfie',
+        sub: 'Your reference photo used throughout your assessment',
+        desc: 'After calibration you take a master selfie. This photo is compared against selfies taken during your real exam, so quality matters.',
+        image: 'images/19.png',
+        ann: [
+          { x: 50, y: 18, t: 'Position your face <strong>fully within the corner guides</strong> — move your phone into position rather than leaning' },
+          { x: 50, y: 50, t: 'The <strong>owl overlay</strong> confirms your face has been detected — it should align over your face' },
+          { x: 50, y: 82, t: '<strong>Good, even lighting is essential</strong> — face a window or lamp; avoid bright backlighting or shadows' }
+        ]
+      },
+      {
+        title: 'Step 8: Confirm Your Profile Photo',
+        sub: 'Review and save your master selfie',
+        desc: 'The app asks you to confirm the selfie before saving. A poor quality master selfie can cause issues during your actual assessment.',
+        image: 'images/Picture22.png',
+        ann: [
+          { x: 50, y: 28, t: 'Check this photo is <strong>sharp, well-lit, and clearly shows your face</strong>' },
+          { x: 27, y: 77, t: 'Tap <strong>NO</strong> to retake if the photo is blurry, poorly lit, or your face is obscured' },
+          { x: 70, y: 77, t: 'Tap <strong>YES</strong> to save this as your master selfie and continue to login' }
+        ]
+      },
+      {
+        title: 'Step 9: Log In to the App',
+        sub: 'Use the credentials you created during registration',
+        desc: 'Log in with your UNISA myLife email and the password you created during registration. This is <strong>NOT</strong> your myUnisa portal password.',
+        image: 'images/1.png',
+        ann: [
+          { x: 50, y: 43, t: 'Enter your <strong>UNISA myLife email address</strong>' },
+          { x: 50, y: 53, t: 'Enter the <strong>password you created during registration</strong> — not your myUnisa password' },
+          { x: 50, y: 63, t: 'Tap <strong>LOGIN</strong> — ensure you are connected to the internet before tapping' }
+        ]
+      },
+      {
+        title: 'Step 10: Complete the Demo Test',
+        sub: 'Practice the full exam flow — at least 3 days before your real exam',
+        desc: 'After logging in, complete the <strong>Unisa Demo Test 2026</strong> from the My Exams menu. This 8-minute simulation covers every type of prompt you will encounter. Do it well in advance.',
+        image: 'images/20.png',
+        ann: [
+          { x: 8,  y: 7,  t: 'Tap the <strong>menu icon (≡)</strong> at the top-left to open the navigation drawer' },
+          { x: 50, y: 67, t: 'Tap <strong>START INVIGILATION</strong> on the Unisa Demo Test 2026 to begin your practice run' },
+          { x: 50, y: 84, t: '<strong>Charge your phone to 100%</strong> before any assessment — a flat battery mid-exam is not an excuse' }
+        ]
+      }
+    ]
+  },
+
+  {
+    id: 'during', label: 'On the Day', icon: '🎓', color: '#1a7a4a',
+    steps: [
+      {
+        title: 'Key Timings to Know',
+        sub: 'Three critical windows govern every invigilated assessment',
+        desc: 'Understanding these timing windows is essential. Missing any of them may result in a failed submission or a missing invigilation record.',
+        image: 'images/Screenshot 2026-05-07 194403.jpeg',
+        ann: [
+          { x: 50, y: 22, t: '<strong>15 minutes before start:</strong> Access your question paper on myExams AND prepare the Invigilator App' },
+          { x: 50, y: 52, t: 'The <strong>START INVIGILATION</strong> button is active from 15 min before to 30 min after the official start time' },
+          { x: 50, y: 78, t: 'You have <strong>30 minutes after the exam ends</strong> to submit your script on myExams — do not miss this' }
+        ]
+      },
+      {
+        title: 'Access Your Question Paper',
+        sub: 'Open myExams 15 minutes before your scheduled start time',
+        desc: 'Before starting the Invigilator App, access your question paper on the myExams platform. If using a single device for both, open the Invigilator App first, then access myExams via the in-app browser.',
+        image: null, icon: '🌐',
+        items: [
+          { i: '🔗', t: 'Visit <strong>myExams portal</strong> at myexams.unisa.ac.za/portal — log in and click on your module code' },
+          { i: '⏰', t: 'Do this <strong>15 minutes before</strong> your scheduled start time' },
+          { i: '📱', t: '<strong>One device only?</strong> Open the Invigilator App first, then access myExams via the in-app browser' },
+          { i: '💡', t: 'Two devices is strongly recommended — one for the Invigilator App, one for myExams' }
+        ], ann: []
+      },
+      {
+        title: 'Navigate to My Exams',
+        sub: 'Open the menu and find your Take Home examination',
+        desc: 'Log in to the app, tap the menu icon, and select <strong>My Exams</strong>. Only Take Home exams that require invigilation will be listed here.',
+        image: 'images/20.png',
+        ann: [
+          { x: 8,  y: 7,  t: 'Tap the <strong>menu icon (≡)</strong> at the top-left to open the navigation drawer' },
+          { x: 50, y: 45, t: 'Select <strong>My Exams</strong> from the menu to view your Take Home examinations' },
+          { x: 50, y: 67, t: 'Module not listed? Contact UNISA — <strong>do not</strong> attempt to start an unlisted module' }
+        ]
+      },
+      {
+        title: 'Start Invigilation',
+        sub: 'Find your exam and tap START INVIGILATION',
+        desc: 'In My Exams, locate your Take Home exam. The <strong>START INVIGILATION</strong> button becomes active 15 minutes before the official start time and deactivates 30 minutes after.',
+        image: 'images/22.jpg',
+        ann: [
+          { x: 50, y: 28, t: 'Your exam module code and dates — <strong>confirm this matches your exam timetable</strong>' },
+          { x: 50, y: 43, t: 'Tap <strong>START INVIGILATION</strong> — this button is only active in the window around your scheduled start time' },
+          { x: 50, y: 80, t: 'When prompted for GPS access, select <strong>"While using the app"</strong> — location data is required' }
+        ]
+      },
+      {
+        title: 'During the Assessment',
+        sub: 'Keep the app open and respond to Attention! prompts immediately',
+        desc: 'Keep the app open at all times — never minimise or exit it. At random intervals you will receive <strong>Attention!</strong> prompts. Stop your work immediately and respond.',
+        image: 'images/23.jpg',
+        ann: [
+          { x: 76, y: 7,  t: 'Tap <strong>ACCESS BROWSER</strong> to open myExams within the app — use this on single-device setups only' },
+          { x: 50, y: 58, t: 'When you see <strong>Attention!</strong> — stop working immediately and complete the requested action' },
+          { x: 50, y: 77, t: 'Tap <strong>CONTINUE</strong> to proceed with the prompt — selfie, ID photo, or other required action' },
+          { x: 82, y: 90, t: 'The <strong>timer</strong> shows minutes remaining — you can place your phone face-down between prompts' }
+        ]
+      },
+      {
+        title: 'Finish Your Assessment',
+        sub: 'Only confirm when you have fully completed your exam',
+        desc: 'When done, the <strong>FINISH ASSESSMENT</strong> button turns yellow. Tap it and confirm. Your finish time in the app is compared with your submission time on myExams.',
+        image: 'images/25.jpg',
+        warn: true,
+        ann: [
+          { x: 50, y: 56, t: '<strong>Only finish when you have fully completed all answers</strong> — your finish time is compared against myExams' },
+          { x: 22, y: 77, t: 'Tap <strong>NO, CANCEL</strong> to return to your exam and continue working' },
+          { x: 72, y: 77, t: 'Tap <strong>YES, FINISHED</strong> only when your assessment is completely done' }
+        ]
+      }
+    ]
+  },
+
+  {
+    id: 'after', label: 'Uploading & Finishing', icon: '📤', color: '#C8102E',
+    steps: [
+      {
+        title: 'Upload Your Script Photos',
+        sub: 'You have exactly 10 minutes to photograph all pages',
+        desc: 'After finishing, you are prompted to photograph your script. Tap the <strong>yellow + button</strong> to start. After 10 minutes the app auto-uploads whatever was captured.',
+        image: 'images/27.jpg',
+        ann: [
+          { x: 82, y: 87, t: 'The <strong>10-minute countdown</strong> begins immediately — work quickly and methodically through every page' },
+          { x: 13, y: 28, t: 'Tap the <strong>yellow + button</strong> to open the camera and start photographing your script pages' },
+          { x: 50, y: 72, t: 'Each photo must be <strong>clear and well-lit</strong> with your student number visible on every page' }
+        ]
+      },
+      {
+        title: 'Photograph Each Page',
+        sub: 'Capture every page clearly — student number must be visible',
+        desc: 'Photograph each page one at a time. Your student number must be clearly visible on every page. Tap Retry if a photo is unclear.',
+        image: 'images/28.jpg',
+        ann: [
+          { x: 50, y: 28, t: 'Ensure your <strong>student number</strong> is clearly legible — it must appear on every page you photograph' },
+          { x: 50, y: 87, t: 'Tap <strong>+ Page</strong> to photograph the next page of your script — repeat until all pages are captured' },
+          { x: 8,  y: 87, t: 'Tap <strong>Retry</strong> if the photo is blurry, dark, or your student number is not visible' },
+          { x: 86, y: 87, t: 'Tap <strong>Done</strong> only after every single page of your script has been photographed' }
+        ]
+      },
+      {
+        title: 'Confirm and Upload',
+        sub: 'Upload your script photos to the Invigilator database',
+        desc: 'Once all pages are photographed, confirm the upload. Your script photos are stored in The Invigilator database as invigilation evidence.',
+        image: 'images/32.png',
+        ann: [
+          { x: 50, y: 47, t: 'Confirm that <strong>all pages were captured clearly</strong> before proceeding with the upload' },
+          { x: 68, y: 75, t: 'Tap <strong>YES, UPLOAD</strong> to submit your script photos to The Invigilator database' }
+        ]
+      },
+      {
+        title: '⚠ CRITICAL: Also Submit on myExams',
+        sub: 'The Invigilator upload does NOT replace your myExams submission',
+        desc: 'Uploading to the Invigilator App is for <strong>invigilation purposes only</strong>. You must <strong>also</strong> submit your answer script on UNISA\'s myExams platform within 30 minutes of exam end. Scripts submitted only to the app are <strong>not accepted</strong>.',
+        image: 'images/Screenshot 2026-05-07 194436.jpeg',
+        warn: true,
+        ann: [
+          { x: 50, y: 28, t: '<strong>The Invigilator App upload is invigilation evidence only</strong> — it is NOT a formal submission to UNISA' },
+          { x: 50, y: 57, t: 'Submit your answer script on <strong>myExams portal within 30 minutes</strong> of your exam end time' },
+          { x: 50, y: 80, t: 'You can share the PDF directly from the app and use it to upload to myExams' }
+        ]
+      },
+      {
+        title: 'Your Reference Code',
+        sub: 'Screenshot this code as proof of your successful upload',
+        desc: 'After uploading, you receive a unique reference code. Screenshot or note this code — it is your proof that data was received by The Invigilator\'s system.',
+        image: 'images/33.png',
+        ann: [
+          { x: 50, y: 46, t: '<strong>Screenshot this reference code</strong> — you will need it if you have any queries about your submission' },
+          { x: 50, y: 68, t: 'You can find this code again under <strong>View Invigilated Assessments</strong> in the app menu' },
+          { x: 50, y: 80, t: 'Tap <strong>Continue</strong> to see uploaded files and proceed to the completion screen' }
+        ]
+      },
+      {
+        title: 'Well Done! Share Your PDF',
+        sub: 'Strongly recommended: share the PDF to yourself as a backup',
+        desc: 'The app generates a PDF of your script photos. Share this to yourself via email or WhatsApp. You can also use it to upload directly to myExams.',
+        image: 'images/34.png',
+        ann: [
+          { x: 25, y: 57, t: 'Tap <strong>SHARE PDF</strong> to email or WhatsApp your script PDF to yourself as a backup copy' },
+          { x: 73, y: 57, t: 'Tap <strong>BACK TO DASHBOARD</strong> to return and verify your upload in Invigilated Assessments' },
+          { x: 50, y: 72, t: 'Confirm all items show <strong>✓ Uploaded Items</strong> and <strong>✓ Uploaded data</strong> before leaving' }
+        ]
+      },
+      {
+        title: 'Verify Your Upload',
+        sub: 'Confirm your data was received by The Invigilator',
+        desc: 'From the menu, select <strong>View Invigilated Assessments</strong>. Your exam should appear with an upload timestamp. A "Processing" status is completely normal for up to 24 hours.',
+        image: 'images/30.jpg',
+        ann: [
+          { x: 50, y: 42, t: 'Your exam appears here with an <strong>upload timestamp</strong> — confirm it is listed correctly' },
+          { x: 50, y: 62, t: '<strong>"Processing" is normal</strong> for the first 24 hours — no action needed if you see this status' },
+          { x: 50, y: 80, t: 'Stuck on the upload screen? Upload to myExams first, close the app fully, log back in — if taken to dashboard, your data uploaded' }
+        ]
+      }
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+const S = { pi: 0, si: 0, ai: 0, timer: null };
+
+// ═══════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════
+function render() {
+  const phase = PHASES[S.pi];
+  const step  = phase.steps[S.si];
+  const total = phase.steps.length;
+
+  // Phase tabs
+  const nav = document.getElementById('phaseNav');
+  nav.innerHTML = '';
+  PHASES.forEach((ph, i) => {
+    const b = document.createElement('button');
+    b.className = 'p-tab' + (i === S.pi ? ' active' : '');
+    b.style.setProperty('--tc', ph.color);
+    b.innerHTML = `<span>${ph.icon}</span>${ph.label}`;
+    b.onclick = () => { S.pi = i; S.si = 0; S.ai = 0; render(); };
+    nav.appendChild(b);
+  });
+
+  // Progress
+  document.getElementById('progLbl').textContent =
+    `${phase.label} — Step ${S.si + 1} of ${total}`;
+  const bar = document.getElementById('progBar');
+  bar.style.width   = `${((S.si + 1) / total) * 100}%`;
+  bar.style.background = phase.color;
+
+  // Main grid
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+  main.className = 'main fade-in';
+
+  main.appendChild(step.image ? buildImgPanel(step) : buildPlaceholder(step));
+  main.appendChild(buildInfoPanel(step, phase));
+
+  // Bottom nav
+  const isFirst = S.pi === 0 && S.si === 0;
+  const isLast  = S.pi === PHASES.length - 1 && S.si === total - 1;
+  const hasAnns = step.ann && step.ann.length > 1;
+
+  document.getElementById('btnPrev').disabled = isFirst;
+  document.getElementById('btnAnn').style.display = hasAnns ? 'flex' : 'none';
+  const btnNext = document.getElementById('btnNext');
+  btnNext.style.background = phase.color;
+  btnNext.textContent = isLast ? 'Finish ✓' : 'Next Step →';
+  document.getElementById('navMid').textContent = `${S.si + 1} / ${total}`;
+
+  // Auto-cycle annotations
+  clearTimeout(S.timer);
+  if (step.ann && step.ann.length > 0) cycleAnn(step);
+}
+
+// ── Build image panel ───────────────────────
+function buildImgPanel(step) {
+  const wrap = document.createElement('div');
+  wrap.className = 'img-panel';
+
+  const img = document.createElement('img');
+  img.src = step.image;
+  img.alt = step.title;
+  wrap.appendChild(img);
+
+  const overlay = document.createElement('div');
+  overlay.className = 'ann-overlay';
+  overlay.id = 'annOverlay';
+  wrap.appendChild(overlay);
+
+  const place = () => placeDots(img, step.ann, PHASES[S.pi].color);
+  img.addEventListener('load', place);
+  if (img.complete && img.naturalWidth) place();
+  window.addEventListener('resize', place, { once: false });
+
+  return wrap;
+}
+
+function placeDots(img, anns, color) {
+  const overlay = document.getElementById('annOverlay');
+  if (!overlay || !anns || !anns.length) return;
+  overlay.innerHTML = '';
+
+  const cW = img.clientWidth;
+  const cH = img.clientHeight;
+  const nW = img.naturalWidth  || cW;
+  const nH = img.naturalHeight || cH;
+
+  const scale = Math.min(cW / nW, cH / nH);
+  const rW = nW * scale, rH = nH * scale;
+  const oX = (cW - rW) / 2, oY = (cH - rH) / 2;
+
+  anns.forEach((a, i) => {
+    const px = oX + (a.x / 100) * rW;
+    const py = oY + (a.y / 100) * rH;
+    const dot = document.createElement('div');
+    dot.className = 'ann-dot' + (i === S.ai ? ' active' : '');
+    dot.id = `dot${i}`;
+    dot.style.left = px + 'px';
+    dot.style.top  = py + 'px';
+    dot.style.background = color;
+    dot.innerHTML = `<span>${i + 1}</span>`;
+    overlay.appendChild(dot);
+  });
+}
+
+// ── Build placeholder for info-only steps ───
+function buildPlaceholder(step) {
+  const d = document.createElement('div');
+  d.className = 'img-placeholder';
+  d.innerHTML = `<div class="ph-icon">${step.icon || '📱'}</div><p>Follow the steps on the right</p>`;
+  return d;
+}
+
+// ── Build info panel ────────────────────────
+function buildInfoPanel(step, phase) {
+  const panel = document.createElement('div');
+  panel.className = 'info-panel';
+
+  // Badge
+  const badge = el('div', 'phase-badge', `${phase.icon} ${phase.label}`);
+  badge.style.background = phase.color;
+  panel.appendChild(badge);
+
+  panel.appendChild(el('div', 'step-title', step.title));
+  panel.appendChild(el('div', 'step-sub',   step.sub));
+  const desc = el('div', 'step-desc');
+  desc.innerHTML = step.desc;
+  panel.appendChild(desc);
+
+  // Annotation highlight box (for image steps)
+  if (step.image && step.ann && step.ann.length) {
+    const box = document.createElement('div');
+    box.className = 'ann-box' + (step.warn ? ' warn' : '');
+    box.id = 'annBox';
+
+    const lbl = el('div', 'ann-box-lbl');
+    lbl.id = 'annLbl';
+    lbl.textContent = `🔍 Focus point ${S.ai + 1} of ${step.ann.length}`;
+    box.appendChild(lbl);
+
+    const txt = el('div', 'ann-box-txt');
+    txt.id = 'annTxt';
+    txt.innerHTML = step.ann[S.ai].t;
+    box.appendChild(txt);
+    panel.appendChild(box);
+
+    // Pip row
+    const pips = el('div', 'pips');
+    pips.id = 'pips';
+    step.ann.forEach((_, i) => {
+      const pip = el('div', 'pip' + (i === S.ai ? ' active' : (i < S.ai ? ' done' : '')));
+      pip.onclick = () => { S.ai = i; updateAnn(step, phase.color); };
+      pips.appendChild(pip);
+    });
+    const cnt = el('span', 'pip-count');
+    cnt.id = 'pipCnt';
+    cnt.textContent = `${S.ai + 1} / ${step.ann.length}`;
+    pips.appendChild(cnt);
+    panel.appendChild(pips);
+  }
+
+  // Info list (for info-only steps)
+  if (step.items && step.items.length) {
+    const list = el('div', 'info-list');
+    step.items.forEach(item => {
+      const row = el('div', 'info-row');
+      row.innerHTML = `<span class="ico">${item.i}</span><span>${item.t}</span>`;
+      list.appendChild(row);
+    });
+    panel.appendChild(list);
+  }
+
+  // Warning stripe
+  if (step.warn) {
+    const w = el('div', 'warn-stripe');
+    w.innerHTML = '<span>⚠️</span><div>This step has critical deadlines. Failing to meet them may result in your assessment not being marked.</div>';
+    panel.appendChild(w);
+  }
+
+  return panel;
+}
+
+// ═══════════════════════════════════════════════════════════
+// ANNOTATION CYCLING
+// ═══════════════════════════════════════════════════════════
+function cycleAnn(step) {
+  S.timer = setTimeout(() => {
+    S.ai = (S.ai + 1) % step.ann.length;
+    updateAnn(step, PHASES[S.pi].color);
+    cycleAnn(step);
+  }, 3500);
+}
+
+function updateAnn(step, color) {
+  // Dots
+  document.querySelectorAll('.ann-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === S.ai);
+  });
+  // Pips
+  document.querySelectorAll('.pip').forEach((p, i) => {
+    p.className = 'pip' + (i === S.ai ? ' active' : (i < S.ai ? ' done' : ''));
+  });
+  // Text
+  const txt = document.getElementById('annTxt');
+  const lbl = document.getElementById('annLbl');
+  const cnt = document.getElementById('pipCnt');
+  if (txt) txt.innerHTML  = step.ann[S.ai].t;
+  if (lbl) lbl.textContent = `🔍 Focus point ${S.ai + 1} of ${step.ann.length}`;
+  if (cnt) cnt.textContent = `${S.ai + 1} / ${step.ann.length}`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════
+function go(dir) {
+  clearTimeout(S.timer);
+  const phase = PHASES[S.pi];
+  const step  = phase.steps[S.si];
+
+  if (dir === 'ann') {
+    S.ai = (S.ai + 1) % step.ann.length;
+    updateAnn(step, phase.color);
+    cycleAnn(step);
+    return;
+  }
+  if (dir === 'next') {
+    if (S.si < phase.steps.length - 1) { S.si++; }
+    else if (S.pi < PHASES.length - 1) { S.pi++; S.si = 0; }
+  }
+  if (dir === 'prev') {
+    if (S.si > 0) { S.si--; }
+    else if (S.pi > 0) { S.pi--; S.si = PHASES[S.pi].steps.length - 1; }
+  }
+  S.ai = 0;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') go('next');
+  if (e.key === 'ArrowLeft')  go('prev');
+  if (e.key === 'ArrowDown')  go('ann');
+});
+
+// ── Utility ─────────────────────────────────
+function el(tag, cls, text) {
+  const d = document.createElement(tag);
+  if (cls)  d.className = cls;
+  if (text) d.textContent = text;
+  return d;
+}
+
+// ── Boot ─────────────────────────────────────
+render();
+</script>
+</body>
+</html>
